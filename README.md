@@ -19,4 +19,9 @@ INFO: From Building external/protobuf+/java/core/libcore.jar (43 source files, 1
 external/protobuf+/java/core/src/main/java/com/google/protobuf/RepeatedFieldBuilderV3.java:28: warning: [dep-ann] deprecated item is not annotated with @Deprecated
 public class RepeatedFieldBuilderV3<
        ^
+Blah blah some javac warning...
 ```
+
+## Installing
+
+Follow example at https://github.com/aspect-build/rules_ts/pull/796/files
