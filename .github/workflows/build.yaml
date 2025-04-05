@@ -5,10 +5,12 @@ on:
     tags:
       - 'v*'  # Triggers only on version tags like v1.0.0
 
+permissions:
+  contents: write  # gives access to create releases
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
