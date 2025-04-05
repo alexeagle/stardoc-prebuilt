@@ -24,4 +24,6 @@ Blah blah some javac warning...
 
 ## Installing
 
-Follow example at https://github.com/aspect-build/rules_ts/pull/796/files
+Read release notes on the release you grab, which should be at the matching version to your `stardoc` bazel_dep.
+
+Also see example at https://github.com/aspect-build/rules_ts/pull/796/files
