@@ -1,0 +1,45 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers only on version tags like v1.0.0
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Store build cache per workflow.
+          disk-cache: ${{ github.workflow }}
+          # Share repository cache between workflows.
+          repository-cache: true
+      
+      - name: Build project
+        id: build
+        run: | 
+            TARGET=@stardoc//src/main/java/com/google/devtools/build/stardoc/renderer:renderer_deploy.jar
+            bazel build $TARGET
+            echo "path=$(bazel 2>/dev/null cquery --output=files $TARGET)" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.build.outputs.path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
